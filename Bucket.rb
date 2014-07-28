@@ -16,6 +16,26 @@ class Bucket
     retrieve_validFilesRecursive(@rootfolder)
   end
 
+  def get_year_month
+    dates_as_string = @rootfolder.basename.to_s.split("_")
+    dates_as_integer =dates_as_string[0].to_i, dates_as_string[1].to_i
+  end
+
+  def add_file(file)
+    puts("will copy file #{file} to folder #{@rootfolder} if it is not too old...")
+    prefix = calc_prefix(file)
+    currentYoungestDate = @youngestFileMap[prefix]
+    if (currentYoungestDate)
+      if (currentYoungestDate < file.mtime)
+        puts("will not copy file #{file} to folder #{@rootfolder} as it is too old - must be younger than #{currentYoungestDate}")
+        return
+      end
+    end
+    FileUtils.cp(file, @rootfolder, options = {:preserve=>true})
+    @youngestFileMap[prefix] = file.mtime
+    puts (self.to_s)
+  end
+
   def retrieve_validFilesRecursive(folder)
     validFiles = []
     children = Pathname.new(folder).children.select{|e|

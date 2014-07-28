@@ -1,6 +1,6 @@
-require 'Buckets'
-require 'Bucket'
-require 'Source'
+require './Buckets.rb'
+require './Bucket.rb'
+require './Source.rb'
 
 #targetfolder = "?"
 #buckets = Buckets.new(targetfolder)

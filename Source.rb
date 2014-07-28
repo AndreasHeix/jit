@@ -7,6 +7,17 @@ class Source
   end
 
   def copy(target)
+    files = get_all_files
+    files.each {|file|
+      targetbucket = target.get_fitting_bucket(file)
+      if (targetbucket)
+        puts "Target for #{file} is bucket #{targetbucket}"
+        targetbucket.add_file(file)
+      else
+        puts "Target for #{file} is not yet existing"
+      end
+
+    }
 
   end
 
